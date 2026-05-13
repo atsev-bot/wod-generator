@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WoD Generator — Random Workout of the Day</title>
-  <meta name="description" content="Generate randomized complete workouts with sets, reps, and rest times. Full body, upper, lower, push, pull, and HIIT.">
+  <meta name="description" content="Generate randomized complete workouts with sets, reps, and rest times. Built-in timer mode and workout history. Full body, upper, lower, push, pull, and HIIT.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
@@ -40,6 +40,11 @@
 
     <button class="btn-generate" id="generate-btn">🏋️ Generate Workout</button>
 
+    <div class="action-bar" id="action-bar" style="display:none;">
+      <button class="btn-action" id="btn-timer">⏱️ Start Timer</button>
+      <button class="btn-action" id="btn-history">📜 History</button>
+    </div>
+
     <div class="workout" id="workout">
       <div class="workout-header">
         <div class="wod-name" id="wod-name"></div>
@@ -48,9 +53,35 @@
       <div class="exercise-list" id="exercise-list"></div>
     </div>
 
-    <div class="footer">
-      <p>🏋️ WoD Generator — randomized workouts, every time.<br>No signup needed. No data stored. Just lift.</p>
+    <div class="history-section" id="history-section">
+      <div class="history-header">
+        <h2>📜 Workout History</h2>
+        <button class="btn-clear-history" id="btn-clear-history">Clear All</button>
+      </div>
+      <div class="history-list" id="history-list"></div>
     </div>
+
+    <div class="footer">
+      <p>🏋️ WoD Generator — randomized workouts, every time.<br>No signup needed. History saved locally. Just lift.</p>
+    </div>
+  </div>
+
+  <!-- Timer Overlay -->
+  <div class="timer-overlay" id="timer-overlay">
+    <div class="timer-phase" id="timer-phase">GET READY</div>
+    <div class="timer-exercise" id="timer-exercise">Get Ready!</div>
+    <div class="timer-set-info" id="timer-set-info"></div>
+    <div class="timer-countdown work" id="timer-countdown">5</div>
+    <div class="timer-progress">
+      <div class="timer-progress-bar work" id="timer-progress-bar"></div>
+    </div>
+    <div class="timer-controls">
+      <button class="timer-btn timer-btn-primary" id="timer-pause">⏸ Pause</button>
+      <button class="timer-btn timer-btn-secondary" id="timer-skip">⏭ Skip</button>
+      <button class="timer-btn timer-btn-secondary" id="timer-quit">✕ Quit</button>
+      <button class="timer-btn timer-btn-primary" id="timer-restart" style="display:none;">🔄 Restart</button>
+    </div>
+    <div class="timer-summary" id="timer-summary"></div>
   </div>
 
   <script src="/js/app.js"></script>

@@ -12,6 +12,7 @@
   --accent2: #ef4444;
   --success: #22c55e;
   --blue: #3b82f6;
+  --purple: #a78bfa;
   --radius: 14px;
   --radius-sm: 8px;
 }
@@ -122,7 +123,7 @@ body::before {
   gap: 0.6rem;
   width: 100%;
   padding: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
@@ -137,6 +138,33 @@ body::before {
 .btn-generate:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(249,115,22,0.35); }
 .btn-generate:active { transform: translateY(0); }
 .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Action bar */
+.action-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.btn-action {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.btn-action:hover { border-color: var(--accent); color: var(--text); background: var(--card-alt); }
 
 /* Workout card */
 .workout {
@@ -195,10 +223,12 @@ body::before {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.1rem 1.25rem;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .exercise-block:hover { border-color: rgba(249,115,22,0.4); }
+.exercise-block.active-ex { border-color: var(--accent); box-shadow: 0 0 20px rgba(249,115,22,0.15); }
+.exercise-block.done-ex { opacity: 0.5; border-color: var(--success); }
 
 .exercise-block .ex-top {
   display: flex;
@@ -229,7 +259,7 @@ body::before {
 
 .tag-group { background: rgba(59,130,246,0.15); color: var(--blue); }
 .tag-type { background: rgba(249,115,22,0.15); color: var(--accent); }
-.tag-equip { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.tag-equip { background: rgba(139,92,246,0.15); color: var(--purple); }
 
 .exercise-block .ex-details {
   display: flex;
@@ -246,8 +276,207 @@ body::before {
 
 .exercise-block .ex-stat .label { color: var(--text-dim); }
 .exercise-block .ex-stat .value { font-weight: 700; }
-
 .exercise-block .ex-stat.rest .value { color: var(--success); }
+
+.exercise-block .done-badge {
+  display: none;
+  color: var(--success);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+
+.exercise-block.done-ex .done-badge { display: inline; }
+
+/* ─── Timer Overlay ─── */
+.timer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(12,12,16,0.97);
+  animation: fadeIn 0.3s ease;
+}
+
+.timer-overlay.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.timer-phase {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+
+.timer-exercise {
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.timer-set-info {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+}
+
+.timer-countdown {
+  font-size: 7rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+
+.timer-countdown.work { color: var(--accent); }
+.timer-countdown.rest { color: var(--success); }
+.timer-countdown.get-ready { color: var(--blue); }
+
+.timer-progress {
+  width: 280px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s linear, background 0.3s;
+}
+
+.timer-progress-bar.work { background: var(--accent); }
+.timer-progress-bar.rest { background: var(--success); }
+.timer-progress-bar.get-ready { background: var(--blue); }
+
+.timer-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.timer-btn {
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.timer-btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.timer-btn-primary:hover { background: #ea6c10; }
+
+.timer-btn-secondary {
+  background: var(--card-alt);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+
+.timer-btn-secondary:hover { color: var(--text); border-color: var(--text-dim); }
+
+.timer-summary {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* ─── History ─── */
+.history-section {
+  display: none;
+  margin-top: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.history-section.active { display: block; }
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.history-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.btn-clear-history {
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-clear-history:hover { border-color: var(--accent2); color: var(--accent2); }
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.history-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.history-item:hover { border-color: var(--accent); }
+
+.history-item .hi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.history-item .hi-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.history-item .hi-date {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.history-item .hi-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.history-item .hi-stats strong { color: var(--text); }
+
+.history-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
 
 /* Footer */
 .footer {
@@ -268,4 +497,7 @@ body::before {
   .workout-header .wod-name { font-size: 1.3rem; }
   .wod-meta .meta-item { font-size: 0.8rem; }
   .exercise-block .ex-details { gap: 0.75rem; }
+  .timer-countdown { font-size: 5rem; }
+  .timer-exercise { font-size: 1.2rem; }
+  .timer-btn { padding: 0.65rem 1.25rem; font-size: 0.9rem; }
 }
