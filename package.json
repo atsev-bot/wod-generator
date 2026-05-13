@@ -1,0 +1,13 @@
+{
+  "name": "wod-generator",
+  "version": "1.0.0",
+  "description": "Workout of the Day generator — randomized complete workouts with sets, reps, and rest times",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
